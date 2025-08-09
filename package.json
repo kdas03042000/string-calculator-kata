@@ -2,7 +2,7 @@
   "name": "string-calculator-kata",
   "version": "1.0.0",
   "description": "",
-  "main": "calculate.js",
+  "main": "src/StringCalculator.js",
   "scripts": {
     "test": "jest"
   },
