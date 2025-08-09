@@ -88,4 +88,14 @@ describe("StringCalculator", () => {
   test("should support delimiters of any length", () => {
     expect(calculator.add("//[***]\n1***2***3\n4")).toBe(10);
   });
+
+  // Test for rule #11: support multiple custom delimiters
+  test("should support multiple custom delimiters", () => {
+    expect(calculator.add("//[*][%]\n1*2%3")).toBe(6);
+  });
+
+  // Test for rule #12: support multiple custom delimiters of any length
+  test("should support multiple custom delimiters of any length", () => {
+    expect(calculator.add("//[*][%][^^**]\n1*2%3^^**4")).toBe(10);
+  });
 });

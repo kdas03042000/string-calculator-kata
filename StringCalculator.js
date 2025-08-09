@@ -3,6 +3,7 @@ class StringCalculator {
     // this will track the number of times add method is called
     this.addInvocationCount = 0;
   }
+
   /**
    * method to add all the numbers provided to it
    * @param {String} numbers | comma seperated numbers
@@ -26,32 +27,35 @@ class StringCalculator {
    * @returns {Number[]} Array of parsed numbers
    */
   parseNumbers(numbers) {
-    let delimiter = /[,\n]/;
+    let delimiterPattern = /[,\n]/;
     let numbersToProcess = numbers;
 
     // Check for custom delimiter syntax
     if (numbers.startsWith("//")) {
-      let customDelimiter;
       const parts = numbers.split("\n");
-      const delimiterLine = parts.shift(); // e.g., "//[***]" or "//;"
+      const delimiterLine = parts.shift();
+      numbersToProcess = parts.join("\n");
 
-      // Support for delimiters of any length
-      if (delimiterLine.startsWith("//[")) {
-        customDelimiter = delimiterLine.substring(3, delimiterLine.length - 1);
+      // Find all delimiters enclosed in brackets, e.g., "[*]" or "[%%]"
+      const customDelimiters = delimiterLine.match(/\[(.*?)\]/g);
+      let customDelimiterStr;
+
+      if (customDelimiters) {
+        // Extract from brackets, escape for regex, and join with OR operator
+        customDelimiterStr = customDelimiters
+          .map((d) => this.escapeRegExp(d.slice(1, -1)))
+          .join("|");
       } else {
-        customDelimiter = delimiterLine.substring(2); // Fallback for single char delimiter
+        // Fallback for single, non-bracketed delimiter
+        customDelimiterStr = this.escapeRegExp(delimiterLine.substring(2));
       }
 
-      // Create a new regex that includes both the custom delimiter and the newline,
-      // making sure to escape any special regex characters in the custom delimiter.
-      const escapedDelimiter = this.escapeRegExp(customDelimiter);
-      delimiter = new RegExp(`${escapedDelimiter}|\\n`);
-
-      numbersToProcess = parts.join("\n");
+      // Create a new regex that includes all custom delimiters OR the newline
+      delimiterPattern = new RegExp(`${customDelimiterStr}|\\n`);
     }
 
-    // Split the numbers, parse them, and handle potential empty strings from trailing delimiters
-    return numbersToProcess.split(delimiter).map((num) => {
+    // Split the numbers using the final delimiter pattern.
+    return numbersToProcess.split(delimiterPattern).map((num) => {
       const parsedNum = parseInt(num.trim(), 10);
       return isNaN(parsedNum) ? 0 : parsedNum;
     });
