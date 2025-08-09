@@ -22,4 +22,9 @@ describe("StringCalculator", () => {
   test("should return the sum of two numbers", () => {
     expect(calculator.add("1,2")).toBe(3);
   });
+
+  // Test for rule #2: Handle an unknown amount of numbers
+  test("should return the sum of multiple numbers", () => {
+    expect(calculator.add("1,2,3,4,5")).toBe(15);
+  });
 });
