@@ -9,9 +9,17 @@ class StringCalculator {
       return 0; // Rule #1: Return 0 for an empty string
     }
 
-    return this.sumOfNumbers(
-      numbers.split(",").map((num) => parseInt(num, 10))
-    );
+    const nums = this.parseNumbers(numbers);
+    return this.sumOfNumbers(nums);
+  }
+
+  /**
+   * Parses the input string and returns an array of numbers
+   * @param {String} numbers - Input string containing numbers with delimiters
+   * @returns {Number[]} Array of parsed numbers
+   */
+  parseNumbers(numbers) {
+    return numbers.split(/[,\n]/).map((num) => parseInt(num.trim(), 10));
   }
 
   /**
@@ -23,8 +31,13 @@ class StringCalculator {
     return numbers.trim() === "";
   }
 
+  /**
+   * Calculates the sum of an array of numbers
+   * @param {Number[]} numbers - Array of numbers to sum
+   * @returns {Number} The sum of all numbers
+   */
   sumOfNumbers(numbers) {
-    return numbers.reduce((number, sum) => sum + number, 0);
+    return numbers.reduce((sum, number) => sum + number, 0);
   }
 }
 
