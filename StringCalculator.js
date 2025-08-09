@@ -1,16 +1,22 @@
 class StringCalculator {
+  constructor() {
+    // this will track the number of times add method is called
+    this.addInvocationCount = 0;
+  }
   /**
    * method to add all the numbers provided to it
    * @param {String} numbers | comma seperated numbers
    * @returns {Number} sum of all numbers according to the logic
    */
   add(numbers) {
+    this.addInvocationCount++;
     if (this.isEmpty(numbers)) {
       return 0; // Rule #1: Return 0 for an empty string
     }
 
-    const nums = this.parseNumbers(numbers);
+    let nums = this.parseNumbers(numbers);
     this.handleNegatives(nums); // Rule #5: Check for negative numbers
+    nums = this.ignoreBigNumbers(nums); // Rule #9: Ignore numbers > 1000
     return this.sumOfNumbers(nums);
   }
 
@@ -49,6 +55,15 @@ class StringCalculator {
   }
 
   /**
+   * Filters out numbers bigger than 1000.
+   * @param {Number[]} numbers - Array of numbers.
+   * @returns {Number[]} A new array with numbers less than or equal to 1000.
+   */
+  ignoreBigNumbers(numbers) {
+    return numbers.filter((num) => num <= 1000);
+  }
+
+  /**
    * checks whether string is empty
    * @param {String} numbers
    * @returns {Boolean}
@@ -64,6 +79,14 @@ class StringCalculator {
    */
   sumOfNumbers(numbers) {
     return numbers.reduce((sum, number) => sum + number, 0);
+  }
+
+  /**
+   * Returns how many times the add() method was invoked.
+   * @returns {Number} The invocation count.
+   */
+  getCalledCount() {
+    return this.addInvocationCount;
   }
 }
 
