@@ -37,4 +37,23 @@ describe("StringCalculator", () => {
   test("should handle new lines between numbers", () => {
     expect(calculator.add("//;\n1;2;3")).toBe(6);
   });
+
+  // Test for rule #5: throw error for single negative value
+  test("should throw an error for a single negative number", () => {
+    expect(() => calculator.add("-1")).toThrow("negatives not allowed: -1");
+  });
+
+  // Test for rule #5: throw error for multiple negative value and print their values
+  test("should throw an error listing all negative numbers", () => {
+    const input = "1,-2,3,-4";
+    const expectedError = "negatives not allowed: -2,-4";
+    expect(() => calculator.add(input)).toThrow(expectedError);
+  });
+
+  // Test for rule #5: throw error for multiple negative values and custom delimiters
+  test("should throw an error for negative numbers with custom delimiters", () => {
+    const input = "//;\n1;-2;3;-4";
+    const expectedError = "negatives not allowed: -2,-4";
+    expect(() => calculator.add(input)).toThrow(expectedError);
+  });
 });

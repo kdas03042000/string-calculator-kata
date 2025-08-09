@@ -10,6 +10,7 @@ class StringCalculator {
     }
 
     const nums = this.parseNumbers(numbers);
+    this.handleNegatives(nums); // Rule #5: Check for negative numbers
     return this.sumOfNumbers(nums);
   }
 
@@ -33,6 +34,18 @@ class StringCalculator {
     return numbersToProcess
       .split(delimiter)
       .map((num) => parseInt(num.trim(), 10));
+  }
+
+  /**
+   * Checks for negative numbers and throws an exception if any are found.
+   * @param {Number[]} numbers - Array of numbers to check.
+   * @throws {Error} If negative numbers are present.
+   */
+  handleNegatives(numbers) {
+    const negatives = numbers.filter((num) => num < 0);
+    if (negatives.length > 0) {
+      throw new Error(`negatives not allowed: ${negatives.join(",")}`);
+    }
   }
 
   /**
