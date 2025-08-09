@@ -78,4 +78,14 @@ describe("StringCalculator", () => {
   test("should handle multiple numbers over 1000", () => {
     expect(calculator.add("5,1001,6,2000")).toBe(11);
   });
+
+  // Test for rule #10: support custom delimiters of any length
+  test("should support delimiters of any length", () => {
+    expect(calculator.add("//[***]\n1***2***3")).toBe(6);
+  });
+
+  // Test for rule #10: support custom delimiters of any length also having newline as its delimiter
+  test("should support delimiters of any length", () => {
+    expect(calculator.add("//[***]\n1***2***3\n4")).toBe(10);
+  });
 });

@@ -31,15 +31,30 @@ class StringCalculator {
 
     // Check for custom delimiter syntax
     if (numbers.startsWith("//")) {
+      let customDelimiter;
       const parts = numbers.split("\n");
-      const delimiterLine = parts.shift(); // e.g., "//;"
-      delimiter = delimiterLine.substring(2); // e.g., ";"
+      const delimiterLine = parts.shift(); // e.g., "//[***]" or "//;"
+
+      // Support for delimiters of any length
+      if (delimiterLine.startsWith("//[")) {
+        customDelimiter = delimiterLine.substring(3, delimiterLine.length - 1);
+      } else {
+        customDelimiter = delimiterLine.substring(2); // Fallback for single char delimiter
+      }
+
+      // Create a new regex that includes both the custom delimiter and the newline,
+      // making sure to escape any special regex characters in the custom delimiter.
+      const escapedDelimiter = this.escapeRegExp(customDelimiter);
+      delimiter = new RegExp(`${escapedDelimiter}|\\n`);
+
       numbersToProcess = parts.join("\n");
     }
 
-    return numbersToProcess
-      .split(delimiter)
-      .map((num) => parseInt(num.trim(), 10));
+    // Split the numbers, parse them, and handle potential empty strings from trailing delimiters
+    return numbersToProcess.split(delimiter).map((num) => {
+      const parsedNum = parseInt(num.trim(), 10);
+      return isNaN(parsedNum) ? 0 : parsedNum;
+    });
   }
 
   /**
@@ -52,6 +67,16 @@ class StringCalculator {
     if (negatives.length > 0) {
       throw new Error(`negatives not allowed: ${negatives.join(",")}`);
     }
+  }
+
+  /**
+   * Escapes special characters in a string for use in a regular expression.
+   * @param {String} string - The string to escape.
+   * @returns {String} The escaped string.
+   * @private
+   */
+  escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
   }
 
   /**
