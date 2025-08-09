@@ -19,7 +19,20 @@ class StringCalculator {
    * @returns {Number[]} Array of parsed numbers
    */
   parseNumbers(numbers) {
-    return numbers.split(/[,\n]/).map((num) => parseInt(num.trim(), 10));
+    let delimiter = /[,\n]/;
+    let numbersToProcess = numbers;
+
+    // Check for custom delimiter syntax
+    if (numbers.startsWith("//")) {
+      const parts = numbers.split("\n");
+      const delimiterLine = parts.shift(); // e.g., "//;"
+      delimiter = delimiterLine.substring(2); // e.g., ";"
+      numbersToProcess = parts.join("\n");
+    }
+
+    return numbersToProcess
+      .split(delimiter)
+      .map((num) => parseInt(num.trim(), 10));
   }
 
   /**

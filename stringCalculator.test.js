@@ -32,4 +32,9 @@ describe("StringCalculator", () => {
   test("should handle new lines between numbers", () => {
     expect(calculator.add("1\n2,3")).toBe(6);
   });
+
+  // Test for rule #4: Handle new lines between numbers
+  test("should handle new lines between numbers", () => {
+    expect(calculator.add("//;\n1;2;3")).toBe(6);
+  });
 });
