@@ -32,3 +32,5 @@ pids
 # Operating System
 .DS_Store
 Thumbs.db
+
+calculate*.js

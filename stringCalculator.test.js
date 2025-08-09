@@ -12,4 +12,14 @@ describe("StringCalculator", () => {
   test("should return 0 for an empty string", () => {
     expect(calculator.add("")).toBe(0);
   });
+
+  // Test for rule #1: A single number should return itself
+  test("should return the number itself when a single number is given", () => {
+    expect(calculator.add("1")).toBe(1);
+  });
+
+  // Test for rule #1: Two numbers should return their sum
+  test("should return the sum of two numbers", () => {
+    expect(calculator.add("1,2")).toBe(3);
+  });
 });
